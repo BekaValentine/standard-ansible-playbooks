@@ -1,0 +1,44 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install ansible pip dependencies
+      apt:
+        name: python-setuptools
+        state: present
+      apt:
+        name: virtualenv
+        state: present
+    - name: Add $APP_NAME user
+      user:
+        name: $APP_NAME
+    - name: Create $APP_NAME application directory
+      file:
+        path: /opt/$APP_NAME
+        state: directory
+    - name: Create storage directory
+      file:
+        path: /var/$APP_NAME
+        owner: $APP_NAME
+        group: $APP_NAME
+        state: directory
+        mode: 0700
+    - name: Clone $APP_NAME repo
+      git:
+        repo: '$APP_REPO'
+        dest: /opt/$APP_NAME
+    - name: Install requirements
+      pip:
+        virtualenv_python: python3
+        virtualenv: /opt/$APP_NAME/venv
+        requirements: /opt/$APP_NAME/src/requirements.txt
+    - name: Install $APP_NAME service file
+      copy:
+        src: $APP_NAME/$APP_NAME.service
+        dest: /etc/systemd/system/$APP_NAME.service
+        mode: 0644
+    - name: Setup systemd $APP_NAME service
+      systemd:
+        name: $APP_NAME.service
+        state: started
+        enabled: yes

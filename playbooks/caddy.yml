@@ -1,0 +1,47 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Add caddy user
+      user:
+        name: caddy
+    - name: Download caddy
+      get_url:
+        dest: /home/caddy/caddy.tar.gz
+        url: https://github.com/caddyserver/caddy/releases/download/v2.1.1/caddy_2.1.1_linux_amd64.tar.gz
+    - name: Untar caddy
+      become_user: caddy
+      unarchive:
+        remote_src: yes
+        dest: /home/caddy
+        src: /home/caddy/caddy.tar.gz
+    - name: Install caddy
+      become_user: root
+      copy:
+        remote_src: yes
+        owner: root
+        group: caddy
+        mode: 0750
+        src: /home/caddy/caddy
+        dest: /usr/bin/caddy
+    - name: Add caddyfile
+      copy:
+        owner: caddy
+        group: caddy
+        src: caddy/Caddyfile
+        dest: /etc/caddy/
+    - name: Create /etc/ssl/caddy
+      file:
+        state: directory
+        path: /etc/ssl/caddy
+    - name: Install caddy service file
+      copy:
+        src: caddy/caddy.service
+        dest: /etc/systemd/system/
+        mode: 0644
+    - name: Setup systemd caddy service
+      systemd:
+        name: caddy.service
+        state: reloaded
+        enabled: yes
+        daemon_reload: yes
