@@ -30,7 +30,7 @@ The domain name of the web app.
 
 ### `$APP_NAME`
 
-The name of the app.
+The name of the app. Also used as the name of the user, so this should be a name in [a-zA-Z0-9_] ideally.
 
 ### `$APP_REPO`
 

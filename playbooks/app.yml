@@ -4,10 +4,7 @@
   tasks:
     - name: Install ansible pip dependencies
       apt:
-        name: python-setuptools
-        state: present
-      apt:
-        name: virtualenv
+        name: python-setuptools, virtualenv
         state: present
     - name: Add $APP_NAME user
       user:
@@ -23,8 +20,18 @@
         group: $APP_NAME
         state: directory
         mode: 0700
+    - name: Add Github to known_hosts
+      become_user: $APP_NAME
+      lineinfile:
+        dest: /home/$APP_NAME/.ssh/known_hosts
+        create: yes
+        state: present
+        line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+        regexp: "^github\\.com"
     - name: Clone $APP_NAME repo
+      become_user: root
       git:
+        key_file: /home/$APP_NAME/.ssh/id_rsa
         repo: '$APP_REPO'
         dest: /opt/$APP_NAME
     - name: Install requirements
@@ -34,11 +41,11 @@
         requirements: /opt/$APP_NAME/src/requirements.txt
     - name: Install $APP_NAME service file
       copy:
-        src: $APP_NAME/$APP_NAME.service
+        src: app/$APP_NAME.service
         dest: /etc/systemd/system/$APP_NAME.service
         mode: 0644
     - name: Setup systemd $APP_NAME service
       systemd:
         name: $APP_NAME.service
-        state: started
+        state: restarted
         enabled: yes
