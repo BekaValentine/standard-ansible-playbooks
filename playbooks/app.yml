@@ -40,7 +40,7 @@
         regexp: "^github\\.com"
     - name: "Clone {{ app_name | mandatory }} repo"
       git:
-        key_file: "/home/{{ app_name | mandatory }}/.ssh/id_rsa"
+        #key_file: "/home/{{ app_name | mandatory }}/.ssh/id_rsa"
         repo: "{{ github_repo | mandatory }}"
         dest: "/opt/{{ app_name | mandatory }}"
     - name: Install requirements

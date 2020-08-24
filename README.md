@@ -12,6 +12,14 @@ To use these playbooks, you need to have:
 
 Additionally, you must define the various variables specified below, as they provide the necessary information for your app to be installed and run.
 
+If the git repo is private, you should generate a key in `/home/{{ app_name | mandatory }}/.ssh/id_rsa` and uncomment the line
+
+```
+key_file: "/home/{{ app_name | mandatory }}/.ssh/id_rsa"
+```
+
+in app.yml in the git clone task. Make sure that is a deploy key for the repo (NOT a new key in your github account).
+
 ## Ansible Usage
 
 Ansible needs to be told which inventory file to use using `-i` (by default is uses `/etc/ansible/hosts`).
