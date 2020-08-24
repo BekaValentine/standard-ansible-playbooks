@@ -1,6 +1,6 @@
 # standard-ansible-playbooks
 
-A collection of Ansible playbooks that all of my Python web apps have in common.
+A collection of Ansible playbooks and roles that all of my Python web apps have in common.
 
 ## How To Use These Standard Playbooks
 
@@ -10,7 +10,7 @@ To use these playbooks, you need to have:
 - A Flask-based Python webapp.
 - Ansible on your controlling machine.
 
-Additionally, you must define the various variables specified below, as they provide the necessary information for your app to be installed and run.
+With these resources, you can then modify the `all.yml` playbook. There, you will find a `caddy` role which has its variables commented out. You will need to uncomment the variable and give a value in place of `...`. You will also see an `app` role, which is completely commented out. Similarly, you need to uncomment this and give values for variables for each app you wish to deploy.
 
 If the git repo is private, you should generate a key in `/home/{{ app_name | mandatory }}/.ssh/id_rsa` and uncomment the line
 
@@ -38,21 +38,29 @@ ansible-playbook -i hosts playbooks/all.yml
 
 ## Variables
 
-The following variables exist within the playbooks. Some of them are mandatory, and are marked as such, others are optional.
+The following variables exist within the roles. Some of them are mandatory, and are marked as such, others are optional.
 
-### `caddy_domain_name`
+### Caddy Role Variables
+
+These variables are used in the `caddy` role.
+
+#### `caddy_domain_name`
 
 MANDATORY
 
 The domain name of the web app.
 
-### `user_name`
+### App Role Variables
+
+These variables are used in the `app` role.
+
+#### `user_name`
 
 MANDATORY
 
 The name of the user and group that runs the app.
 
-### `user_name`
+#### `user_name`
 
 Location: app.yml
 
@@ -60,25 +68,25 @@ MANDATORY
 
 The name of the user that owns the app.
 
-### `app_name`
+#### `app_name`
 
 MANDATORY
 
 The name of the app.
 
-### `app_description`
+#### `app_description`
 
 MANDATORY
 
 The description of the app to use for the app's systemd service.
 
-### `github_repo`
+#### `github_repo`
 
 MANDATORY
 
 The git repo url for the app.
 
-### `app_environment`
+#### `app_environment`
 
 OPTIONAL
 
