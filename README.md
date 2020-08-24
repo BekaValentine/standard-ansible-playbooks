@@ -42,15 +42,11 @@ The following variables exist within the playbooks. Some of them are mandatory, 
 
 ### `caddy_domain_name`
 
-Location: caddy.yml
-
 MANDATORY
 
 The domain name of the web app.
 
 ### `user_name`
-
-Location: app.yml
 
 MANDATORY
 
@@ -66,15 +62,11 @@ The name of the user that owns the app.
 
 ### `app_name`
 
-Location: app.yml
-
 MANDATORY
 
 The name of the app.
 
 ### `app_description`
-
-Location: app.yml
 
 MANDATORY
 
@@ -82,15 +74,11 @@ The description of the app to use for the app's systemd service.
 
 ### `github_repo`
 
-Location: app.yml
-
 MANDATORY
 
 The git repo url for the app.
 
 ### `app_environment`
-
-Location: app.yml
 
 OPTIONAL
 
