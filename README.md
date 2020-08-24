@@ -2,7 +2,17 @@
 
 A collection of Ansible playbooks that all of my Python web apps have in common.
 
-## Ansible usage
+## How To Use These Standard Playbooks
+
+To use these playbooks, you need to have:
+
+- A Debian webserver.
+- A Flask-based Python webapp.
+- Ansible on your controlling machine.
+
+Additionally, you must define the various variables specified below, as they provide the necessary information for your app to be installed and run.
+
+## Ansible Usage
 
 Ansible needs to be told which inventory file to use using `-i` (by default is uses `/etc/ansible/hosts`).
 
