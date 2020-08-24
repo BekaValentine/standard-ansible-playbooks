@@ -18,20 +18,62 @@ Or to run all playbooks (i.e. configure all infrastructure):
 ansible-playbook -i hosts playbooks/all.yml
 ```
 
-## Variables that must be defined
+## Variables
 
-### `$ANSIBLE_HOSTS`
+The following variables exist within the playbooks. Some of them are mandatory, and are marked as such, others are optional.
 
-The ssh names of the hosts to deploy to.
+### `caddy_domain_name`
 
-### `$CADDY_DOMAIN_NAME`
+Location: caddy.yml
+
+MANDATORY
 
 The domain name of the web app.
 
-### `$APP_NAME`
+### `user_name`
 
-The name of the app. Also used as the name of the user, so this should be a name in [a-zA-Z0-9_] ideally.
+Location: app.yml
 
-### `$APP_REPO`
+MANDATORY
+
+The name of the user and group that runs the app.
+
+### `user_name`
+
+Location: app.yml
+
+MANDATORY
+
+The name of the user that owns the app.
+
+### `app_name`
+
+Location: app.yml
+
+MANDATORY
+
+The name of the app.
+
+### `app_description`
+
+Location: app.yml
+
+MANDATORY
+
+The description of the app to use for the app's systemd service.
+
+### `github_repo`
+
+Location: app.yml
+
+MANDATORY
 
 The git repo url for the app.
+
+### `app_environment`
+
+Location: app.yml
+
+OPTIONAL
+
+The environment variables to use for the systemd service execstart.

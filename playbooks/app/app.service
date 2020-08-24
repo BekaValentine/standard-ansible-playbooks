@@ -1,0 +1,34 @@
+[Unit]
+Description={{ app_description | mandatory }}
+After=network.target
+
+[Service]
+Type=simple
+
+User={{ user_name | mandatory }}
+Group={{ user_name | mandatory }}
+
+WorkingDirectory=/opt/{{ user_name | mandatory }}/src
+
+{% if app_environment %}
+{% for k, v in app_environment.items() %}
+Environment="{{ k }}={{ v }}"
+{% endfor %}
+{% endif %}
+
+ExecStart=/opt/{{ user_name | mandatory }}/venv/bin/gunicorn -w 1 -b 127.0.0.1:1337 '{{ app_name | mandatory }}:main()'
+Restart=none
+
+; Use private /tmp and /var/tmp, which are discarded after caddy stops.
+PrivateTmp=true
+; Use a minimal /dev (May bring additional security if switched to 'true', but it may not work on Raspberry Pi's or other devices, so it has been disabled in this dist.)
+PrivateDevices=false
+; Hide /home, /root, and /run/user. Nobody will steal your SSH-keys.
+ProtectHome=true
+; Make /usr, /boot, /etc and possibly some more folders read-only.
+ProtectSystem=full
+;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
+ReadWriteDirectories=/var/{{ user_name | mandatory }}
+
+[Install]
+WantedBy=multi-user.target

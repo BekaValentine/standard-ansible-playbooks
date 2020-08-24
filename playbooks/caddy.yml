@@ -1,5 +1,7 @@
 ---
 - hosts: all
+  vars:
+    caddy_domain_name: station-451.net
   become: yes
   tasks:
     - name: Add caddy user
@@ -16,7 +18,6 @@
         dest: /home/caddy
         src: /home/caddy/caddy.tar.gz
     - name: Install caddy
-      become_user: root
       copy:
         remote_src: yes
         owner: root
@@ -25,7 +26,7 @@
         src: /home/caddy/caddy
         dest: /usr/bin/caddy
     - name: Add caddyfile
-      copy:
+      template:
         owner: caddy
         group: caddy
         src: caddy/Caddyfile
@@ -33,6 +34,9 @@
     - name: Create /etc/ssl/caddy
       file:
         state: directory
+        mode: 0700
+        owner: caddy
+        group: caddy
         path: /etc/ssl/caddy
     - name: Install caddy service file
       copy:
