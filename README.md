@@ -76,6 +76,12 @@ MANDATORY
 
 The description of the app to use for the app's systemd service.
 
+#### `secrets`
+
+OPTIONAL
+
+Some secrets to copy over. This will end up in `/opt/{{ user_name }}/secrets`. If the value given is the name of a directory, and the name ends in a slash, e.g. `foo_secrets/`, then only the contents of the directory will be copied over, otherwise if you just give the directory name without a slash, e.g. `foo_secrets`, the directory itself will be copied as a subdirectory of `/opt/{{ user_name }}/secrets`.
+
 #### `github_repo`
 
 MANDATORY

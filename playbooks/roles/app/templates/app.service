@@ -8,7 +8,7 @@ Type=simple
 User={{ user_name | mandatory }}
 Group={{ user_name | mandatory }}
 
-WorkingDirectory=/opt/{{ user_name | mandatory }}/src
+WorkingDirectory=/opt/{{ user_name | mandatory }}/repo/src
 
 {% if app_environment %}
 {% for k, v in app_environment.items() %}

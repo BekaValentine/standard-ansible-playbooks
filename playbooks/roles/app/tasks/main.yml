@@ -23,6 +23,14 @@
     group: "{{ user_name | mandatory }}"
     state: directory
     mode: 0700
+- name: Copy secrets over, if necessary
+  when: secrets is defined
+  copy:
+    src: "{{ secrets }}"
+    dest: "/opt/{{ user_name }}/secrets"
+    owner: "{{ user_name | mandatory }}"
+    group: "{{ user_name | mandatory }}"
+    mode: 0400
 - name: Add Github to known_hosts
   lineinfile:
     dest: "/home/{{ user_name | mandatory }}/.ssh/known_hosts"
@@ -41,12 +49,12 @@
     key_file: "/home/{{ user_name | mandatory if github_deploy_key is not none else omit }}/.ssh/id_rsa"
     accept_hostkey: yes
     repo: "{{ github_repo | mandatory }}"
-    dest: "/opt/{{ app_name | mandatory }}"
+    dest: "/opt/{{ app_name | mandatory }}/repo"
 - name: Install requirements
   pip:
     virtualenv_python: python3
     virtualenv: "/opt/{{ app_name | mandatory }}/venv"
-    requirements: "/opt/{{ app_name | mandatory }}/src/requirements.txt"
+    requirements: "/opt/{{ app_name | mandatory }}/repo/src/requirements.txt"
 - name: "Install {{ app_name | mandatory }} service file"
   template:
     src: app.service
